@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+
 contract TotallyNAPS is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -35,6 +36,11 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
       uint256 amount;
     }
     mapping(uint256 => Event) events;
+
+    struct slice {
+        uint _len;
+        uint _ptr;
+    }
 
     constructor() ERC721("TotallyNAPS", "NAPS") {
       napCount = 0;
@@ -75,6 +81,23 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         }
 
       return ids;
+    }
+
+    function getChildren(string memory targetId)
+        public
+        view
+        returns (string[] memory)
+    {
+        string[] memory ids;
+
+        for (uint i = 0; i < allNaps.length; i++) {
+            string memory id = naps[allNaps[i]].id;
+            if (startsWith(id, targetId)) {
+              ids[i] = id;
+            }
+        }
+
+        return ids;
     }
 
     function mintTopLevelNFT(address recipient, string memory tokenURI)
@@ -171,5 +194,15 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
 
 
     // }
+    function startsWith(string memory id, string memory parent)
+        internal
+        returns (bool)
+    {
+        uint256 length = bytes(parent).length;
+        bytes memory part = bytes(id)[:length];
+      
+        return Strings.toString(part) == parent;
+    }
+    
 
 }
