@@ -1,0 +1,4 @@
+.dao {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
+import { useMetaMask } from "metamask-react";
 
 import pyramid from './assets/images/Pyramid.png'
 
@@ -15,6 +16,13 @@ import Nap from './components/nap.js'
 import Dao from './components/dao.js'
 
 function App() {
+  const { status, connect, account, chainId, ethereum } = useMetaMask();
+
+  useEffect(() => {
+    connect()
+  }, []);
+ 
+
   return (
     <div className="App">
       <BrowserRouter>
