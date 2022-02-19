@@ -1,0 +1,20 @@
+.MarketplacePage {
+    display: flex;
+    flex-wrap:wrap;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 15rem;
+    margin: 10px;
+}
+
+.napList {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}

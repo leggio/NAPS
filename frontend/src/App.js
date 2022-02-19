@@ -1,7 +1,11 @@
 import './App.css';
-import React, { useEffect, useState } from "react";
-import { Button } from 'react-bootstrap';
-import metamaskLogo from './assets/images/metamask.svg';
+import React, { useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+import { Nav } from 'react-bootstrap';
 
 import pyramid from './assets/images/Pyramid.png'
 
@@ -13,22 +17,41 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <logo className="logo-container">
+        <div className="logo-container">
           <img src={pyramid} alt="logo" className="logo"/>
           <div>
             <div>NAPS</div>
             <div className="small-text">Not a pyramid scheme</div>
           </div>
-        </logo>
+        </div>
         <menu className="menu">
-          <div>Marketplace</div>
-          <div>ZZZ DAO</div>
-          <div>Your NAPS</div>
+          <Nav
+            activeKey="/Marketplace"
+            onSelect={(selectedKey) => {setPage(selectedKey)}}
+          >
+            <Nav.Item>
+            <Nav.Link eventKey="MarketPlace">Marketplace</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="dao">Gyza Dao</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="yourNaps">Your Naps</Nav.Link>
+            </Nav.Item>
+          </Nav>
         </menu>
       </header>
-      <div>
+      <div className="main-body">
         {page}
-        <MarketplacePage />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MarketplacePage />} />
+            <Route path="Marketplace" element={<MarketplacePage />} />
+            <Route path=":nap" element={<MarketplacePage />} />
+          </Routes>
+        </BrowserRouter>,
+
+        
       </div>
     </div>
   );

@@ -25,9 +25,15 @@
 
 .menu {
   display: flex;
-  width: 500px;
   justify-content: space-between;
   margin-right: 15px;
+}
+
+.main-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .logo {
