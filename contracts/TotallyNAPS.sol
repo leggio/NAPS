@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./strings.sol";
+// import "./strings.sol";
 
 
 contract TotallyNAPS is ERC721URIStorage, Ownable {
@@ -21,6 +21,12 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
     address _daoAddress;
 
     uint256 napCount;
+
+    struct slice {
+        uint _len;
+        uint _ptr;
+    }
+
     struct Nap {
       uint256 parent;
       uint256 level;
@@ -38,11 +44,6 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
       uint256 amount;
     }
     mapping(uint256 => Event) events;
-
-    struct slice {
-        uint _len;
-        uint _ptr;
-    }
 
     constructor() ERC721("TotallyNAPS", "NAPS") {
       napCount = 0;
@@ -94,7 +95,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
 
         for (uint i = 0; i < allNaps.length; i++) {
             string memory id = naps[allNaps[i]].id;
-            if (startsWith(id, targetId)) {
+            if (startsWith(toSlice(id), toSlice(targetId))) {
               ids[i] = id;
             }
         }
@@ -196,14 +197,43 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
 
 
     // }
-    function startsWith(string memory id, string memory parent)
-        internal
-        returns (bool)
-    {
-        uint256 length = bytes(parent).length;
-        bytes memory part = bytes(id)[:length];
-      
-        return Strings.toString(part) == parent;
+
+        /*
+     * @dev Returns a slice containing the entire string.
+     * @param self The string to make a slice from.
+     * @return A newly allocated slice containing the entire string.
+     */
+    function toSlice(string memory self) internal pure returns (slice memory) {
+        uint ptr;
+        assembly {
+            ptr := add(self, 0x20)
+        }
+        return slice(bytes(self).length, ptr);
+    }
+
+        /*
+     * @dev Returns true if `self` starts with `needle`.
+     * @param self The slice to operate on.
+     * @param needle The slice to search for.
+     * @return True if the slice starts with the provided text, false otherwise.
+     */
+    function startsWith(slice memory self, slice memory needle) internal pure returns (bool) {
+        if (self._len < needle._len) {
+            return false;
+        }
+
+        if (self._ptr == needle._ptr) {
+            return true;
+        }
+
+        bool equal;
+        assembly {
+            let length := mload(needle)
+            let selfptr := mload(add(self, 0x20))
+            let needleptr := mload(add(needle, 0x20))
+            equal := eq(keccak256(selfptr, length), keccak256(needleptr, length))
+        }
+        return equal;
     }
     
 
