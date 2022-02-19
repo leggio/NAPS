@@ -1,0 +1,99 @@
+
+.napPage {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 5%;
+}
+
+.napPageImg {
+    width: 50%;
+}
+
+.column {
+    max-width: 50%;
+    min-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subInfo{
+    display: flex;
+    color: darkgrey;
+    display: flex;
+    justify-content: center;
+}
+
+.subInfo p{
+    margin: 2px;
+}
+
+.node {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.node div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.green {
+    background-color: green;
+}
+
+.oneNodeRow  {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.twoNodeRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 80px;
+}
+
+.twoNodeRow .node {
+    margin-top: 38px;
+}
+
+.lineRight {
+    width: 20px;
+    height: 25px;
+    border-bottom: 1px solid black;
+    -webkit-transform:
+        translateX(-6px)
+        rotate(62deg); 
+    position: absolute;
+    /* top: -20px; */
+}
+
+.lineLeft {
+    width: 20px;
+    height: 0px;
+    border-bottom: 1px solid black;
+    -webkit-transform:
+        translateX(20px)
+        translateY(14px)
+        rotate(118deg); 
+    position: absolute;
+    /* top: -20px; */
+}
+
+.tree {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
