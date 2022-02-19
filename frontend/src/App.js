@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from "react";
 import { Button } from 'react-bootstrap';
+import metamaskLogo from './assets/images/metamask.svg';
 
 import pyramid from './assets/images/Pyramid.png'
 
