@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button } from 'react-bootstrap';
-
+import {Link} from "react-router-dom";
 
 import '../styles/marketplacePage.css';
 
@@ -37,7 +37,9 @@ function MarketplacePage() {
                         <br></br>
                         Price: {d.price}
                     </Card.Text>
-                    <Button variant="primary">See More</Button>
+                    <Link to={`/nap/${d.id}`}>
+                        <Button variant="primary">See More</Button>
+                    </Link>
                 </Card.Body>
             </Card>            
         );
