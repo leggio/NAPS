@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
-import { useMetaMask } from "metamask-react";
 import Web3 from 'web3';
 
 import pyramid from './assets/images/Pyramid.png'
@@ -21,7 +20,9 @@ import addresses from './contract_data/dev.json'
 
 
 function App() {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
+  let account = "0xDEADBEEF"
+
+  const { ethereum } = window;
 
   const [napsContract, setNapsContract] = useState({});
   const [web3, setWeb3] = useState({});
@@ -29,16 +30,21 @@ function App() {
 
 
   useEffect(() => {
-    connect()
+    ethereum.request({ method: 'eth_requestAccounts' });
     let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     setWeb3(web3);
     setNapsContract(new web3.eth.Contract(NAPSABI, addresses.naps))
   }, []); 
 
   useEffect(() => {
-    console.log(account)
-    setAddress(account)
-  }, [account]);
+    async function fetchAddress() {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      setAddress(account)
+    }
+    
+    fetchAddress()
+  }, []);
 
   return (
     <div className="App">

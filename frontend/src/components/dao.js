@@ -4,12 +4,18 @@ function Dao(props) {
 
   function buyLevel1() {
     console.log("buyTierOne")
+    console.log(props.napsContract)
     props.napsContract.methods.mintTopLevelNFT(props.address, "art.art/wp-content/uploads/2021/09/circa.art_.jpg").send(
       {
         from: props.address,
         value: 250000000000000000
-      }
-    );
+      }, (err, res) => {
+        if (!err) {
+          console.log('woo!');
+        } else {
+          console.log(err);
+        }
+      })
   }
 
   console.log(props.account)
