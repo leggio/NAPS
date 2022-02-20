@@ -73,21 +73,23 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         );
     }
 
-    function getUserNaps(address user) public view returns (string[] memory) {
-        uint256[] memory userNaps;
+    function getUserNaps(address user) public view returns (bool[] memory) {
+        bool[] memory userNaps = new bool[](allNaps.length);
         for (uint256 i = 0; i < allNaps.length; i++) {
             address owner = ERC721.ownerOf(allNaps[i]);
             if (owner == user) {
-                userNaps[i] = allNaps[i];
+                userNaps[i] = true;
+            } else {
+              userNaps[i] = false;
             }
         }
 
-        string[] memory ids;
-        for (uint256 i = 0; i < userNaps.length; i++) {
-            ids[i] = naps[userNaps[i]].id;
-        }
+        // string[] memory ids;
+        // for (uint256 i = 0; i < userNaps.length; i++) {
+        //     ids[i] = naps[userNaps[i]].id;
+        // }
 
-        return ids;
+        return userNaps;
     }
 
     function getChildren(string memory targetId)
@@ -113,7 +115,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         returns (uint256)
     {
         require(
-            msg.value <= topLevelPrice,
+            msg.value >= topLevelPrice,
             "not enough ETH to mint top level NAP"
         );
         _tokenIds.increment();

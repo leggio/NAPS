@@ -8,29 +8,31 @@ function YourNaps(props) {
   const [yourNaps, setYourNaps] = useState([]);
 
   useEffect(() => {
-    props.napsContract.methods.getUserNaps(props.address).call(
-      {
-        from: props.address,
-      }, (err, res) => {
-        if (!err) {
-          console.log(res);
-        } else {
-          console.log(err);
-        }
-      })
+    if(props.address && props.napsContract) {
+      props.napsContract.methods.getUserNaps(props.address).call(
+        {
+          from: props.address,
+        }, (err, res) => {
+          if (!err) {
+            console.log(res);
+          } else {
+            console.log(err);
+          }
+        })
 
-    console.log("yourNaps");
-    let napsFakeData = [];
-    for (let i = 0; i < 4; i++) {
-      napsFakeData.push({
-        id: i,
-        level: 3,
-        price: "0.06 ETH",
-        img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg",
-      });
+      console.log("yourNaps");
+      let napsFakeData = [];
+      for (let i = 0; i < 4; i++) {
+        napsFakeData.push({
+          id: i,
+          level: 3,
+          price: "0.06 ETH",
+          img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg",
+        });
+      }
+      setYourNaps(napsFakeData);
     }
-    setYourNaps(napsFakeData);
-  }, []);
+  }, [props.address]);
 
   function renderCards() {
     const listItems = yourNaps.map((d) => (

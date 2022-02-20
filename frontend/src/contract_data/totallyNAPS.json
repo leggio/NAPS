@@ -139,6 +139,44 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "nap",
+          "type": "uint256"
+        }
+      ],
+      "name": "buyNFT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nap",
+          "type": "uint256"
+        }
+      ],
+      "name": "distribute",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
         }
@@ -228,9 +266,9 @@
       "name": "getUserNaps",
       "outputs": [
         {
-          "internalType": "string[]",
+          "internalType": "uint256[]",
           "name": "",
-          "type": "string[]"
+          "type": "uint256[]"
         }
       ],
       "stateMutability": "view",
@@ -255,6 +293,30 @@
           "internalType": "bool",
           "name": "",
           "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nap",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "listPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "listNFT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -519,6 +581,25 @@
       "name": "transferOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nap",
+          "type": "uint256"
+        }
+      ],
+      "name": "unlistNFT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     }
   ]
