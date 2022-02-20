@@ -240,22 +240,35 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         uint256 blockNumber = napEvent.blockNumber;
         uint256 level = napEvent.level;
 
-        Event[] memory childEvents;
-
+        bool[] memory childEvents = new bool[](allEvents.length);
+        uint256 trueCount = 0;
         for (uint256 i = 0; i < allEvents.length; i++) {
             Event memory e = events[allEvents[i]];
             if (startsWith(toSlice(e.id), toSlice(targetNap.id))) {
                 if (e.blockNumber > blockNumber) {
-                    childEvents[i] = e;
+                    childEvents[i] = true;
+                    trueCount++;
+                } else {
+                    childEvents[i] = false;
                 }
+            }
+        }
+
+        uint256[] memory childIds = new uint256[](trueCount);
+        uint256 trackTrue = 0;
+        for (uint256 i = 0; i < childEvents.length; i++) {
+            if (childEvents[i] == true) {
+                childIds[trackTrue] = i;
+                trackTrue++;
             }
         }
 
         uint256 runningTotal;
 
-        for (uint256 i = 0; i < childEvents.length; i++) {
-            uint256 levelDelta = childEvents[i].level - level;
-            uint256 amount = childEvents[i].amount;
+        for (uint256 i = 0; i < childIds.length; i++) {
+            Event memory childEvent = events[i];
+            uint256 levelDelta = childEvent.level - level;
+            uint256 amount = childEvent.amount;
             for (uint256 j = 0; j <= levelDelta; j++) {
                 runningTotal += amount / 2;
             }
