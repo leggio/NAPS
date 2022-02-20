@@ -111,7 +111,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         returns (uint256)
     {
         require(
-            msg.value <= 250000000000000000,
+            msg.value <= 50000000000000000,
             "not enough ETH to mint top level NAP"
         );
         _tokenIds.increment();
@@ -132,14 +132,11 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        // (bool success, ) = _daoAddress.call{ value: msg.value }("");
-        // require(success, "Transfer Failed");
-
         Event memory newEvent = Event(
             block.number,
             newItemId,
             1,
-            250000000000000000,
+            50000000000000000,
             Strings.toString(_topLevels.current())
         );
         events[newItemId] = newEvent;
@@ -162,7 +159,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         require(parentNap.children < 2, "You may only mint 2 children");
 
         require(
-            msg.value <= 100000000000000000,
+            msg.value <= 25000000000000000,
             "not enough ETH to mint child NAP"
         );
         _tokenIds.increment();
@@ -180,16 +177,13 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        // (bool success, ) = _daoAddress.call{ value: msg.value }("");
-        // require(success, "Transfer Failed");
-
         parentNap.children += 1;
 
         Event memory newEvent = Event(
             block.number,
             newItemId,
             napCount + 1,
-            100000000000000000,
+            25000000000000000,
             newNapId
         );
         events[newItemId] = newEvent;
@@ -202,7 +196,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         return newItemId;
     }
 
-    function distribute(address recipient, uint256 nap)
+    function distribute(uint256 nap)
         public
         payable
         returns (uint256)
@@ -220,11 +214,6 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         uint256 blockNumber = napEvent.blockNumber;
         uint256 level = napEvent.level;
 
-        // go through children
-        // if child block > parent block
-        // check events for child
-        // keep running total of royalty
-
         Event[] memory childEvents;
 
         for (uint256 i = 0; i < allEvents.length; i++) {
@@ -241,14 +230,68 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         for (uint256 i = 0; i < childEvents.length; i++) {
             uint256 levelDelta = childEvents[i].level - level;
             uint256 amount = childEvents[i].amount;
-            for (uint j = 0; j <= levelDelta; j++) {
+            for (uint256 j = 0; j <= levelDelta; j++) {
                 runningTotal += amount / 2;
             }
         }
 
-        // TODO: send to recipient address
+        (bool success, ) = msg.sender.call{ value: runningTotal }("");
+        require(success, "Transfer Failed");
 
         return runningTotal;
+    }
+
+    function buyNFT(uint256 nap)
+        public
+        payable
+        returns (uint256)
+    {
+        Nap memory forSaleNap = naps[nap];
+
+        address owner = ERC721.ownerOf(nap);
+        
+        require(forSaleNap.listPrice == msg.value, "Insufficient price for NAP");
+        require(forSaleNap.forSale == true, "NAP is not for sale");
+        ERC721.safeTransferFrom(owner, msg.sender, nap);
+
+        (bool success, ) = owner.call{ value: msg.value }("");
+        require(success, "Transfer Failed");
+
+        return nap;
+    }
+
+    function listNFT(uint256 nap, uint256 listPrice)
+        public
+        view
+        returns (uint256)
+    {
+        Nap memory forSaleNap = naps[nap];
+
+        address owner = ERC721.ownerOf(nap);
+
+        require(owner == msg.sender, "You can only sell your own NAP");
+
+        forSaleNap.forSale = true;
+        forSaleNap.listPrice = listPrice;
+
+        return nap;
+    }
+
+    function unlistNFT(uint256 nap)
+        public
+        view
+        returns (uint256)
+    {
+        Nap memory forSaleNap = naps[nap];
+
+        address owner = ERC721.ownerOf(nap);
+
+        require(owner == msg.sender, "You can only unlist your own NAP");
+
+        forSaleNap.forSale = false;
+        forSaleNap.listPrice = 0;
+
+        return nap;
     }
 
     /*
