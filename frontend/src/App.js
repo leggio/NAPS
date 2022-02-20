@@ -14,6 +14,7 @@ import pyramid from './assets/images/Pyramid.png'
 import MarketplacePage from './components/marketplacePage.js'
 import Nap from './components/nap.js'
 import Dao from './components/dao.js'
+import YourNaps from './components/yourNaps.js';
 
 import NAPSABI from './contract_data/totallyNAPS.json'
 import addresses from './contract_data/dev.json'
@@ -90,6 +91,9 @@ function App() {
                 />
               } />
               <Route path="/nap/:id" element={<Nap id={p => p.id} />} />
+              <Route path="/yourNaps" element={
+                <YourNaps />
+              } />
             </Routes>          
         </div>
       </BrowserRouter>
