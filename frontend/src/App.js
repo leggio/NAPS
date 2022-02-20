@@ -92,7 +92,10 @@ function App() {
               } />
               <Route path="/nap/:id" element={<Nap id={p => p.id} />} />
               <Route path="/yourNaps" element={
-                <YourNaps />
+                <YourNaps 
+                  napsContract={napsContract}
+                  address={address}
+                />
               } />
             </Routes>          
         </div>
