@@ -1,15 +1,10 @@
-# Basic Sample Hardhat Project
+# Not a Pyramid Scheme (NAPS) NFTs
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+  
 
-Try running some of the following tasks:
+## ETHDenver 2022 Hackathon
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+Team Members: @zanewithspoon @leggio
+
+## Concept:
+Hierarchal NFT royalties that trickle up to a DAO
