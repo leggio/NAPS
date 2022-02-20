@@ -73,23 +73,29 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         );
     }
 
-    function getUserNaps(address user) public view returns (bool[] memory) {
+    function getUserNaps(address user) public view returns (uint256[] memory) {
         bool[] memory userNaps = new bool[](allNaps.length);
+        uint256 trueCount = 0;
         for (uint256 i = 0; i < allNaps.length; i++) {
             address owner = ERC721.ownerOf(allNaps[i]);
             if (owner == user) {
                 userNaps[i] = true;
+                trueCount ++;
             } else {
               userNaps[i] = false;
             }
         }
 
-        // string[] memory ids;
-        // for (uint256 i = 0; i < userNaps.length; i++) {
-        //     ids[i] = naps[userNaps[i]].id;
-        // }
+        uint256[] memory userIds = new uint256[](trueCount);
+        uint256 trackTrue = 0;
+        for (uint i = 0; i < userNaps.length; i++) {
+            if (userNaps[i] == true) {
+              userIds[trackTrue] = i;
+              trackTrue ++;
+            }
+        }
 
-        return userNaps;
+        return userIds;
     }
 
     function getChildren(string memory targetId)
