@@ -86,18 +86,18 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
             address owner = ERC721.ownerOf(allNaps[i]);
             if (owner == user) {
                 userNaps[i] = true;
-                trueCount ++;
+                trueCount++;
             } else {
-              userNaps[i] = false;
+                userNaps[i] = false;
             }
         }
 
         uint256[] memory userIds = new uint256[](trueCount);
         uint256 trackTrue = 0;
-        for (uint i = 0; i < userNaps.length; i++) {
+        for (uint256 i = 0; i < userNaps.length; i++) {
             if (userNaps[i] == true) {
-              userIds[trackTrue] = i;
-              trackTrue ++;
+                userIds[trackTrue] = i;
+                trackTrue++;
             }
         }
 
@@ -107,18 +107,30 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
     function getChildren(string memory targetId)
         public
         view
-        returns (string[] memory)
+        returns (uint256[] memory)
     {
-        string[] memory ids;
-
+        bool[] memory ids = new bool[](allNaps.length);
+        uint256 trueCount = 0;
         for (uint256 i = 0; i < allNaps.length; i++) {
             string memory id = naps[allNaps[i]].id;
             if (startsWith(toSlice(id), toSlice(targetId))) {
-                ids[i] = id;
+                ids[i] = true;
+                trueCount++;
+            } else {
+                ids[i] = false;
             }
         }
 
-        return ids;
+        uint256[] memory childrenIds = new uint256[](trueCount);
+        uint256 trackTrue = 0;
+        for (uint256 i = 0; i < ids.length; i++) {
+            if (ids[i] == true) {
+                childrenIds[trackTrue] = i;
+                trackTrue++;
+            }
+        }
+
+        return childrenIds;
     }
 
     function mintTopLevelNFT(address recipient, string memory tokenURI)
@@ -214,11 +226,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         return newItemId;
     }
 
-    function distribute(uint256 nap)
-        public
-        payable
-        returns (uint256)
-    {
+    function distribute(uint256 nap) public payable returns (uint256) {
         address owner = ERC721.ownerOf(nap);
         require(
             msg.sender == owner,
@@ -253,26 +261,25 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
             }
         }
 
-        (bool success, ) = msg.sender.call{ value: runningTotal }("");
+        (bool success, ) = msg.sender.call{value: runningTotal}("");
         require(success, "Transfer Failed");
 
         return runningTotal;
     }
 
-    function buyNFT(uint256 nap)
-        public
-        payable
-        returns (uint256)
-    {
+    function buyNFT(uint256 nap) public payable returns (uint256) {
         Nap memory forSaleNap = naps[nap];
 
         address owner = ERC721.ownerOf(nap);
-        
-        require(forSaleNap.listPrice == msg.value, "Insufficient price for NAP");
+
+        require(
+            forSaleNap.listPrice == msg.value,
+            "Insufficient price for NAP"
+        );
         require(forSaleNap.forSale == true, "NAP is not for sale");
         ERC721.safeTransferFrom(owner, msg.sender, nap);
 
-        (bool success, ) = owner.call{ value: msg.value }("");
+        (bool success, ) = owner.call{value: msg.value}("");
         require(success, "Transfer Failed");
 
         return nap;
@@ -295,11 +302,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         return nap;
     }
 
-    function unlistNFT(uint256 nap)
-        public
-        view
-        returns (uint256)
-    {
+    function unlistNFT(uint256 nap) public view returns (uint256) {
         Nap memory forSaleNap = naps[nap];
 
         address owner = ERC721.ownerOf(nap);
