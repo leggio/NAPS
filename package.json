@@ -22,6 +22,8 @@
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "dotenv": "^16.0.0",
-    "metamask-react": "^2.2.1"
+    "metamask-react": "^2.2.1",
+    "stream": "0.0.2",
+    "web3": "^1.7.0"
   }
 }
