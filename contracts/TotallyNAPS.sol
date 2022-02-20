@@ -59,17 +59,23 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
             bool,
             uint256,
             string memory,
-            uint256
+            uint256,
+            string memory,
+            address
         )
     {
         Nap memory targetNap = naps[nap];
+        string memory uri = ERC721URIStorage.tokenURI(nap);
+        address owner = ERC721.ownerOf(nap);
         return (
             targetNap.parent,
             targetNap.level,
             targetNap.forSale,
             targetNap.listPrice,
             targetNap.id,
-            targetNap.children
+            targetNap.children,
+            uri,
+            owner
         );
     }
 
