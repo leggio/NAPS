@@ -19,6 +19,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
     address _daoAddress;
 
     uint256 napCount;
+    uint256 topLevelPrice;
 
     struct slice {
         uint256 _len;
@@ -46,6 +47,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
 
     constructor() ERC721("TotallyNAPS", "NAPS") {
         napCount = 0;
+        topLevelPrice = 50000000000000000;
     }
 
     function getNapDetails(uint256 nap)
@@ -111,7 +113,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         returns (uint256)
     {
         require(
-            msg.value <= 50000000000000000,
+            msg.value <= topLevelPrice,
             "not enough ETH to mint top level NAP"
         );
         _tokenIds.increment();
@@ -136,13 +138,15 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
             block.number,
             newItemId,
             1,
-            50000000000000000,
+            topLevelPrice,
             Strings.toString(_topLevels.current())
         );
         events[newItemId] = newEvent;
 
         allNaps.push(newItemId);
         allEvents.push(newItemId);
+
+        topLevelPrice += (topLevelPrice / 10);
 
         return newItemId;
     }
