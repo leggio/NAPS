@@ -203,9 +203,9 @@
       "name": "getChildren",
       "outputs": [
         {
-          "internalType": "string[]",
+          "internalType": "uint256[]",
           "name": "",
-          "type": "string[]"
+          "type": "uint256[]"
         }
       ],
       "stateMutability": "view",
@@ -250,6 +250,16 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",

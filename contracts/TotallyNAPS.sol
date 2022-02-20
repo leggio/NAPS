@@ -142,8 +142,6 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
             msg.value >= topLevelPrice,
             "not enough ETH to mint top level NAP"
         );
-        _tokenIds.increment();
-        _topLevels.increment();
 
         Nap memory newNap = Nap(
             0,
@@ -160,17 +158,10 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        Event memory newEvent = Event(
-            block.number,
-            newItemId,
-            1,
-            topLevelPrice,
-            Strings.toString(_topLevels.current())
-        );
-        events[newItemId] = newEvent;
+        _tokenIds.increment();
+        _topLevels.increment();
 
         allNaps.push(newItemId);
-        allEvents.push(newItemId);
 
         topLevelPrice += (topLevelPrice / 10);
 

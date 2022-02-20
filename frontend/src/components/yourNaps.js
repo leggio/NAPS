@@ -19,9 +19,9 @@ function YourNaps(props) {
 
             let tempNaps = []
             for (let i = 0; i < res.length; i++) {
-              if(res[i]=="1") {
                 const nap = await new Promise((resolve, reject) => {
-                  props.napsContract.methods.getNapDetails(i).call(
+                  console.log(res[i])
+                  props.napsContract.methods.getNapDetails(parseInt(res[i])).call(
                     {
                       from: props.address,
                     }, (err, res) => {
@@ -29,16 +29,17 @@ function YourNaps(props) {
                         resolve({
                           id: res[4],
                           level: res[1],
-                          price: res[2],
+                          price: res[3],
                           img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg"
                         })
+                      } else {
+                        console.log(err)
                       }
                     })
                 })
 
                 tempNaps.push(nap)
                 console.log(nap)
-              }
             }
             console.log(tempNaps)
             setYourNaps(tempNaps)
