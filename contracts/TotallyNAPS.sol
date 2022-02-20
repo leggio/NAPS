@@ -241,7 +241,7 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         for (uint256 i = 0; i < childEvents.length; i++) {
             uint256 levelDelta = childEvents[i].level - level;
             uint256 amount = childEvents[i].amount;
-            for (uint j = 0; j < levelDelta; j++) {
+            for (uint j = 0; j <= levelDelta; j++) {
                 runningTotal += amount / 2;
             }
         }
