@@ -8,6 +8,9 @@ function MarketplacePage(props) {
   const [napsDetailed, setNapsDetailed] = useState([]);
 
   useEffect(() => {
+    console.log("props")
+    console.log(props)
+
     let allNaps;
     let napsDetailed = []
     if(Object.keys(props.address).length !== 0 && Object.keys(props.napsContract).length !== 0) {
@@ -47,7 +50,7 @@ function MarketplacePage(props) {
         }
       )
     }
-  }, [props.address]);
+  });
 
   function renderCards() {
     console.log(napsDetailed);

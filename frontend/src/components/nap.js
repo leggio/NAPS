@@ -5,6 +5,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
 import Tree from './tree.js'
+import Triangle from './triangle.js'
 
 
 
@@ -49,7 +50,8 @@ function Nap(props) {
       return (
         <div className="napPage">
           <div className="column"> 
-            <img src={nap.img} alt="nap image" className="napPageImg" />
+            <Triangle />
+            {/* <img src={nap.img} alt="nap image" className="napPageImg" /> */}
           </div>
           <div className="column">
             <h2>

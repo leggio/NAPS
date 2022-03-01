@@ -20,9 +20,9 @@ function App() {
 
   const { ethereum } = window;
 
-  const [napsContract, setNapsContract] = useState({});
-  const [web3, setWeb3] = useState({});
-  const [address, setAddress] = useState({});
+  const [napsContract, setNapsContract] = useState(undefined);
+  const [web3, setWeb3] = useState(undefined);
+  const [address, setAddress] = useState(undefined);
 
   useEffect(() => {
     ethereum.request({ method: "eth_requestAccounts" });
@@ -45,65 +45,81 @@ function App() {
     fetchAddress();
   }, []);
 
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <header className="App-header">
-          <div className="logo-container">
-            <img src={pyramid} alt="logo" className="logo" />
-            <div>
-              <div>NAPS</div>
-              <div className="small-text">Not a pyramid scheme</div>
+  if(address === undefined || napsContract === undefined) {
+    console.log("address not yet loaded")
+    return (
+      <div className="App"></div>
+    )
+  } else {
+    console.log(address)
+    console.log(napsContract)
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <header className="App-header">
+            <div className="logo-container">
+              <img src={pyramid} alt="logo" className="logo" />
+              <div>
+                <div>NAPS</div>
+                <div className="small-text">Not a pyramid scheme</div>
+              </div>
             </div>
+            <menu className="menu">
+              <Nav activeKey="/dao">
+                <Nav.Item>
+                  <LinkContainer to={`/Marketplace`}>
+                    <Nav.Link>Marketplace</Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+                <Nav.Item>
+                  <LinkContainer to={`/dao`}>
+                    <Nav.Link eventKey="dao">Gyza Dao</Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+                <Nav.Item>
+                  <LinkContainer to={`/yourNaps`}>
+                    <Nav.Link eventKey="yourNaps">Your Naps</Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+              </Nav>
+            </menu>
+          </header>
+          <div className="main-body">
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <MarketplacePage
+                    napsContract={napsContract}
+                    address={address}
+                  />}
+              />
+              <Route
+                path="Marketplace"
+                element={
+                  <MarketplacePage
+                    napsContract={napsContract}
+                    address={address}
+                  />
+                }
+              />
+              <Route
+                path="dao"
+                element={<Dao napsContract={napsContract} address={address} />}
+              />
+              <Route path="/nap/:id" element={<Nap id={(p) => p.id} />} />
+              <Route
+                path="/yourNaps"
+                element={
+                  <YourNaps napsContract={napsContract} address={address} />
+                }
+              />
+            </Routes>
           </div>
-          <menu className="menu">
-            <Nav activeKey="/Marketplace">
-              <Nav.Item>
-                <LinkContainer to={`/Marketplace`}>
-                  <Nav.Link>Marketplace</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-              <Nav.Item>
-                <LinkContainer to={`/dao`}>
-                  <Nav.Link eventKey="dao">Gyza Dao</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-              <Nav.Item>
-                <LinkContainer to={`/yourNaps`}>
-                  <Nav.Link eventKey="yourNaps">Your Naps</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            </Nav>
-          </menu>
-        </header>
-        <div className="main-body">
-          <Routes>
-            <Route path="/" element={<MarketplacePage />} />
-            <Route
-              path="Marketplace"
-              element={
-                <MarketplacePage
-                  napsContract={napsContract}
-                  address={address}
-                />
-              }
-            />
-            <Route
-              path="dao"
-              element={<Dao napsContract={napsContract} address={address} />}
-            />
-            <Route path="/nap/:id" element={<Nap id={(p) => p.id} />} />
-            <Route
-              path="/yourNaps"
-              element={
-                <YourNaps napsContract={napsContract} address={address} />
-              }
-            />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </div>
-  );
+        </BrowserRouter>
+      </div>
+    );
+  }
 }
 
 export default App;
