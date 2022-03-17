@@ -79,6 +79,11 @@ contract TotallyNAPS is ERC721URIStorage, Ownable {
         );
     }
 
+    function getAllNaps() public view returns (uint256)
+    {
+      return napCount;
+    }
+
     function getUserNaps(address user) public view returns (uint256[] memory) {
         bool[] memory userNaps = new bool[](allNaps.length);
         uint256 trueCount = 0;

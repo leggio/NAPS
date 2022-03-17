@@ -19,8 +19,8 @@ function MarketplacePage(props) {
           from: props.address
         }, async (err, res) => {
           if (!err) {
-            console.log(res);
             allNaps = res;
+            console.log(allNaps);
             for (let i = 0; i < allNaps; i++) {
               const nap = await new Promise((resolve, reject) => {
                 props.napsContract.methods.getNapDetails(parseInt(i)).call(
@@ -28,6 +28,7 @@ function MarketplacePage(props) {
                     from: props.address,
                   }, (err, res) => {
                     if (!err) {
+                      console.log(res);
                       resolve({
                         id: res[4],
                         level: res[1],
@@ -50,7 +51,7 @@ function MarketplacePage(props) {
         }
       )
     }
-  });
+  }, [props.address]);
 
   function renderCards() {
     console.log(napsDetailed);

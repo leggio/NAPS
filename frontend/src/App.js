@@ -107,7 +107,9 @@ function App() {
                 path="dao"
                 element={<Dao napsContract={napsContract} address={address} />}
               />
-              <Route path="/nap/:id" element={<Nap id={(p) => p.id} />} />
+              <Route 
+              path="/nap/:id" 
+              element={<Nap napsContract={napsContract} address={address} id={(p) => p.id} /> } />
               <Route
                 path="/yourNaps"
                 element={
