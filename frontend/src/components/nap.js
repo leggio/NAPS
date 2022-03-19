@@ -6,7 +6,7 @@ import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import Tree from "./tree.js";
 import Triangle from "./triangle.js";
 
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 function Nap(props) {
   function listNFT(id, listPrice) {
@@ -46,6 +46,11 @@ function Nap(props) {
   const { id } = useParams();
   const [nap, setNap] = useState({});
   const [napsTree, setNapsTree] = useState([]);
+  const location = useLocation();
+  const { napInfo } = location.state;
+
+  console.log("napInfo");
+  console.log(napInfo);
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -53,23 +58,19 @@ function Nap(props) {
     </Tooltip>
   );
 
-  console.log(props.id);
-
   useEffect(() => {
-    if (Object.keys(nap).length === 0) {
-      setNap({
-        id: id,
-        owner: "0xDEADBEEF",
-        forSale: true,
-        level: 2,
-        children: 1,
-        price: "0.06 ETH",
-        img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg",
-      });
+    setNap({
+      id: napInfo.id,
+      owner: napInfo.owner,
+      forSale: napInfo.forSale,
+      level: napInfo.level,
+      children: napInfo.children,
+      price: "0.06 ETH",
+      img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg",
+    });
 
-      setNapsTree(["100", "1000", "1001"]);
-    }
-  }, [nap]);
+    setNapsTree(["100", "1000", "1001"]);
+  }, [napInfo]);
 
   if (Object.keys(nap).length === 0) {
     return <div />;
@@ -81,10 +82,10 @@ function Nap(props) {
           {/* <img src={nap.img} alt="nap image" className="napPageImg" /> */}
         </div>
         <div className="column">
-          <h2>Nap #: {nap.id}</h2>
+          <h2>Nap #: {napInfo.id}</h2>
           <div className="subInfo">
-            <p>Level: {nap.level}</p>
-            <p>Owner: {nap.owner}</p>
+            <p>Level: {napInfo.level}</p>
+            <p>Owner: {napInfo.owner}</p>
           </div>
           <div>
             <Button variant="primary" onClick={() => listNFT(nap.id, 500)}>

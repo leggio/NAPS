@@ -32,7 +32,10 @@ function MarketplacePage(props) {
                       resolve({
                         id: res[4],
                         level: res[1],
+                        forSale: res[2],
                         price: res[3],
+                        children: res[5],
+                        owner: res[7],
                         img: "https://ih1.redbubble.net/image.630419865.4942/bg,f8f8f8-flat,750x,075,f-pad,1000x1000,f8f8f8.jpg" 
                       })
                     } else {
@@ -68,7 +71,7 @@ function MarketplacePage(props) {
             <br></br>
             Price: {d.price}
           </Card.Text>
-          <Link to={`/nap/${d.id}`}>
+          <Link to={`/nap/${d.id}`} state={{napInfo: d}}>
             <Button variant="primary">See More</Button>
           </Link>
         </Card.Body>
